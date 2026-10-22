@@ -236,9 +236,9 @@ const THEMES = {
   "3": {
     intro: L("Ziet elke woning minstens 3 bomen? Aantal zichtbare bomen per woning, en het aandeel woningen met ≥ 3 zichtbare bomen per gebied.",
              "Does every home see at least 3 trees? Number of visible trees per home, and the share of homes with ≥ 3 visible trees per area."),
-    method: L("Voor elke boom is berekend welk deel van de omgeving binnen 30 m zichtbaar is vanaf de kruin (AHN4, 0,5 m). " +
+    method: L("Voor elke boom is berekend welk deel van de omgeving binnen 30 m zichtbaar is vanaf de kruin (AHN5, 0,5 m). " +
               "Een woning krijgt het hoogste aantal zichtbare bomen dat ergens direct voor de gevel (binnen 1,5 m, op 1,8 m ooghoogte) gezien wordt.",
-              "For every tree, the part of its surroundings within 30 m that is visible from the crown top was calculated (AHN4, 0.5 m). " +
+              "For every tree, the part of its surroundings within 30 m that is visible from the crown top was calculated (AHN5, 0.5 m). " +
               "A home gets the highest number of visible trees seen anywhere just outside its facade (within 1.5 m, at an eye height of 1.8 m)."),
   },
   "30": {
@@ -275,7 +275,7 @@ const THEMES = {
 // Per home a score 0-100 per indicator (web/build_tiles_samen.py), two variants:
 //   p = rule met (0 or 100); per area: the share of homes meeting that rule
 //   s = gradual, min-max between the worst measured value (0) and the target (100):
-//       0-3 trees, 0-30% canopy, 1,275-425 m walk; beyond the target capped
+//       0-3 trees, 0-30% canopy, 1,275-300 m walk; beyond the target capped
 // Compound = sum(w*score) / sum(w) over the indicators with a value. That is
 // linear, so the area means in the tiles give the mean of the homes' compounds.
 const SAMEN_KEYS = ["3", "30", "300"];
@@ -291,19 +291,19 @@ THEMES.samen = {
   intro: L("Proef: de 3, de 30 en de 300 in één kaart. Stel met de schuiven in hoe zwaar elk deel telt; een gebied krijgt het gemiddelde van zijn woningen.",
            "Trial: the 3, the 30 and the 300 in one map. Set with the sliders how much each part counts; an area gets the mean of its homes."),
   method: L("Per woning krijgt elk deel een score van 0 tot 100. <b>Regel gehaald</b>: 100 als de woning dat deel haalt, anders 0; per gebied is dat het aandeel woningen dat het haalt. " +
-            "<b>Geleidelijk</b>: lineair van de slechtste gemeten waarde (0 bomen, 0% kroon, 1.275 m lopen: verder meet de 300 niet) tot het doel (3 bomen, 30%, 425 m), daarboven 100 " +
+            "<b>Geleidelijk</b>: lineair van de slechtste gemeten waarde (0 bomen, 0% kroon, 1.275 m lopen: verder meet de 300 niet) tot het doel (3 bomen, 30%, 300 m), daarboven 100 " +
             "(min-max-normalisatie met vaste grenzen, OECD/JRC-handboek voor samengestelde indicatoren, 2008). " +
             "Het totaal is het gewogen gemiddelde van de drie. Het artikel geeft geen gewichten: elk deel is een minimum. Daarom staat in elke pop-up ook het aandeel woningen dat alle drie haalt, zonder gewichten.",
             "Per home, each part gets a score from 0 to 100. <b>Rule met</b>: 100 if the home meets that part, else 0; per area that is the share of homes meeting it. " +
-            "<b>Gradual</b>: linear from the worst measured value (0 trees, 0% canopy, a 1,275 m walk: the 300 measures no further) to the target (3 trees, 30%, 425 m), 100 beyond " +
+            "<b>Gradual</b>: linear from the worst measured value (0 trees, 0% canopy, a 1,275 m walk: the 300 measures no further) to the target (3 trees, 30%, 300 m), 100 beyond " +
             "(min-max normalisation with fixed bounds, OECD/JRC Handbook on Constructing Composite Indicators, 2008). " +
             "The total is the weighted mean of the three. The paper gives no weights: each part is a minimum. So every popup also shows the share of homes meeting all three, without weights."),
 };
 
 const SOURCES = {
   "3": [
-    [L("Hoogtemodel", "Elevation model"), L('<a href="https://www.ahn.nl/ahn-4" target="_blank" rel="noopener">AHN4</a>, 0,5 m',
-                                             '<a href="https://www.ahn.nl/ahn-4" target="_blank" rel="noopener">AHN4</a>, 0.5 m'), "2020–2022"],
+    [L("Hoogtemodel", "Elevation model"), L('<a href="https://www.ahn.nl/" target="_blank" rel="noopener">AHN5</a>, 0,5 m',
+                                             '<a href="https://www.ahn.nl/" target="_blank" rel="noopener">AHN5</a>, 0.5 m'), "2023–2025"],
     [L("Bomen", "Trees"), L("NEO boomdata (aangekocht)", "NEO tree data (purchased)"), "2020–2022"],
     [L("Woningen", "Homes"), "BAG via PDOK", L("27 september 2026", "27 September 2026")],
     [L("Gebieden", "Areas"), L("Bestuurlijke gebieden; CBS wijken en buurten 2025", "Administrative boundaries; CBS districts and neighbourhoods 2025"), "2025–2026"],
@@ -494,7 +494,7 @@ const map = new maplibregl.Map({
         attribution: L("Hittestress", "Heat stress") + ': <a href="https://www.klimaateffectatlas.nl">Klimaateffectatlas</a>',
       },
       t3: { type: "vector", url: "pmtiles://" + new URL(TILES_3, location.href).href,
-            attribution: L("AHN4, BAG, CBS, bomen: NEO", "AHN4, BAG, CBS, trees: NEO") },
+            attribution: L("AHN5, BAG, CBS, bomen: NEO", "AHN5, BAG, CBS, trees: NEO") },
       t30: { type: "vector", url: "pmtiles://" + new URL(TILES_30_300, location.href).href,
              attribution: "CBS, BAG, OpenStreetMap, TOP10NL" },
       tg: { type: "vector", url: "pmtiles://" + new URL(TILES_GROEN, location.href).href },
